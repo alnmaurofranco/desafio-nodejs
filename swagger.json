@@ -1,0 +1,325 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Desafio Node.js API",
+    "version": "1.0.0"
+  },
+  "components": {
+    "schemas": {}
+  },
+  "paths": {
+    "/sessions/password": {
+      "post": {
+        "operationId": "authenticateWithPassword",
+        "summary": "Autenticar com e-mail e senha",
+        "tags": ["Authentication"],
+        "description": "Autentique-se com e-mail e senha para obter um token de autenticação",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 6
+                  }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Retorna um token de acesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Retorna um token de acesso",
+                  "type": "object",
+                  "properties": {
+                    "accessToken": {
+                      "type": "string",
+                      "format": "jwt"
+                    }
+                  },
+                  "required": ["accessToken"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Retorna uma mensagem de erro",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Retorna uma mensagem de erro",
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["message"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/courses": {
+      "get": {
+        "operationId": "getCourses",
+        "summary": "Lista de cursos",
+        "tags": ["Courses"],
+        "description": "Retorna uma lista de cursos com id e titulo",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "search",
+            "required": false,
+            "description": "Faz a busca por titulo do curso quando informado"
+          },
+          {
+            "schema": {
+              "default": "id",
+              "type": "string",
+              "enum": ["id", "title"]
+            },
+            "in": "query",
+            "name": "orderBy",
+            "required": false,
+            "description": "Ordena a lista de cursos por id ou titulo"
+          },
+          {
+            "schema": {
+              "default": "asc",
+              "type": "string",
+              "enum": ["asc", "desc"]
+            },
+            "in": "query",
+            "name": "orderDirection",
+            "required": false,
+            "description": "Indica a direção da ordenação"
+          },
+          {
+            "schema": {
+              "default": 1,
+              "type": "number",
+              "minimum": 1
+            },
+            "in": "query",
+            "name": "pageIndex",
+            "required": false,
+            "description": "Indica a pagina atual"
+          },
+          {
+            "schema": {
+              "default": 10,
+              "type": "number",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "in": "query",
+            "name": "perPage",
+            "required": false,
+            "description": "Indica a quantidade de cursos por pagina"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de cursos com id e titulo com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Lista de cursos com id e titulo com sucesso!",
+                  "type": "object",
+                  "properties": {
+                    "courses": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "title": {
+                            "type": "string"
+                          },
+                          "enrollmentsCount": {
+                            "type": "number"
+                          }
+                        },
+                        "required": ["id", "title", "enrollmentsCount"],
+                        "additionalProperties": false
+                      }
+                    },
+                    "metadata": {
+                      "type": "object",
+                      "properties": {
+                        "pageIndex": {
+                          "type": "number"
+                        },
+                        "perPage": {
+                          "type": "number"
+                        },
+                        "totalCount": {
+                          "type": "number"
+                        }
+                      },
+                      "required": ["pageIndex", "perPage", "totalCount"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": ["courses", "metadata"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createCourse",
+        "summary": "Criar um curso",
+        "tags": ["Courses"],
+        "description": "Crie um curso com titulo e descricao",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "minLength": 5
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                },
+                "required": ["title"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Retorna o id do curso criado com sucesso!",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Retorna o id do curso criado com sucesso!",
+                  "type": "object",
+                  "properties": {
+                    "courseId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
+                    }
+                  },
+                  "required": ["courseId"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/courses/{id}": {
+      "get": {
+        "operationId": "getCourseById",
+        "summary": "Detalhes de um curso",
+        "tags": ["Courses"],
+        "description": "Retorna os detalhes de um curso",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "course": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "description": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "nullable": true,
+                              "enum": [null]
+                            }
+                          ]
+                        }
+                      },
+                      "required": ["id", "title", "description"],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": ["course"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["message"],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5555"
+    }
+  ]
+}

@@ -1,15 +1,11 @@
-import type { FastifyReply, FastifyRequest } from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify'
 
-export async function checkRequestJWT(
-  request: FastifyRequest,
-  reply: FastifyReply
-) {
+export async function checkRequestJWT(request: FastifyRequest, reply: FastifyReply) {
   try {
     await request.jwtVerify({
       algorithms: ['RS256'],
-    });
-    // biome-ignore lint/correctness/noUnusedVariables: <ignore error type>
-  } catch (error) {
-    throw reply.status(401).send();
+    })
+  } catch {
+    throw reply.status(401).send()
   }
 }

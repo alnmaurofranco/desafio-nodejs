@@ -1,13 +1,13 @@
-import { eq } from 'drizzle-orm';
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
-import z from 'zod';
-import { db } from '../database/client.ts';
-import { courses } from '../database/schema.ts';
-import { checkRequestJWT } from './hooks/check-request-jwt.ts';
-import { checkUserRole } from './hooks/check-user-role.ts';
+import { eq } from 'drizzle-orm'
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
+import z from 'zod'
+import { db } from '../database/client.ts'
+import { courses } from '../database/schema.ts'
+import { checkRequestJWT } from './hooks/check-request-jwt.ts'
+import { checkUserRole } from './hooks/check-user-role.ts'
 
 // biome-ignore lint/suspicious/useAwait: <>
-export const getCourseByIdRoute: FastifyPluginAsyncZod = async (app) => {
+export const getCourseByIdRoute: FastifyPluginAsyncZod = async app => {
   app.get(
     '/courses/:id',
     {
@@ -35,19 +35,16 @@ export const getCourseByIdRoute: FastifyPluginAsyncZod = async (app) => {
       },
     },
     async (request, reply) => {
-      const { id } = request.params;
-      const courseId = id;
+      const { id } = request.params
+      const courseId = id
 
-      const result = await db
-        .select()
-        .from(courses)
-        .where(eq(courses.id, courseId));
+      const result = await db.select().from(courses).where(eq(courses.id, courseId))
 
       if (result.length > 0) {
-        return reply.status(200).send({ course: result[0] });
+        return reply.status(200).send({ course: result[0] })
       }
 
-      return reply.status(404).send({ message: 'Curso não encontrado' });
-    }
-  );
-};
+      return reply.status(404).send({ message: 'Curso não encontrado' })
+    },
+  )
+}

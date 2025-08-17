@@ -1,12 +1,12 @@
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
-import z from 'zod';
-import { db } from '../database/client.ts';
-import { courses } from '../database/schema.ts';
-import { checkRequestJWT } from './hooks/check-request-jwt.ts';
-import { checkUserRole } from './hooks/check-user-role.ts';
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod'
+import z from 'zod'
+import { db } from '../database/client.ts'
+import { courses } from '../database/schema.ts'
+import { checkRequestJWT } from './hooks/check-request-jwt.ts'
+import { checkUserRole } from './hooks/check-user-role.ts'
 
 // biome-ignore lint/suspicious/useAwait: <>
-export const createCourseRoute: FastifyPluginAsyncZod = async (app) => {
+export const createCourseRoute: FastifyPluginAsyncZod = async app => {
   app.post(
     '/courses',
     {
@@ -30,7 +30,7 @@ export const createCourseRoute: FastifyPluginAsyncZod = async (app) => {
       },
     },
     async (request, reply) => {
-      const { title, description } = request.body;
+      const { title, description } = request.body
 
       const result = await db
         .insert(courses)
@@ -38,9 +38,9 @@ export const createCourseRoute: FastifyPluginAsyncZod = async (app) => {
           title,
           description,
         })
-        .returning({ id: courses.id });
+        .returning({ id: courses.id })
 
-      return reply.status(201).send({ courseId: result[0].id });
-    }
-  );
-};
+      return reply.status(201).send({ courseId: result[0].id })
+    },
+  )
+}

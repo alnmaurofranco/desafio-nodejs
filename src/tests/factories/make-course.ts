@@ -1,10 +1,10 @@
-import { fakerPT_BR as faker } from '@faker-js/faker';
-import { db } from '../../database/client.ts';
-import { courses } from '../../database/schema.ts';
+import { fakerPT_BR as faker } from '@faker-js/faker'
+import { db } from '../../database/client.ts'
+import { courses } from '../../database/schema.ts'
 
 interface MakeCourseProps {
-  title?: string;
-  description?: string;
+  title?: string
+  description?: string
 }
 
 export async function makeCourse({ title, description }: MakeCourseProps = {}) {
@@ -14,7 +14,7 @@ export async function makeCourse({ title, description }: MakeCourseProps = {}) {
       title: title ?? faker.lorem.word(6),
       description: description ?? faker.lorem.sentence(),
     })
-    .returning();
+    .returning()
 
-  return result[0];
+  return result[0]
 }

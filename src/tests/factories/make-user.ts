@@ -1,20 +1,20 @@
-import { randomUUID } from 'node:crypto';
-import { faker } from '@faker-js/faker';
-import { hash } from 'argon2';
-import { app } from '../../app.ts';
-import { db } from '../../database/client.ts';
-import { users } from '../../database/schema.ts';
+import { randomUUID } from 'node:crypto'
+import { faker } from '@faker-js/faker'
+import { hash } from 'argon2'
+import { app } from '../../app.ts'
+import { db } from '../../database/client.ts'
+import { users } from '../../database/schema.ts'
 
 interface MakeUserProps {
-  name?: string;
-  email?: string;
-  password?: string;
-  role?: (typeof users.$inferInsert)['role'];
+  name?: string
+  email?: string
+  password?: string
+  role?: (typeof users.$inferInsert)['role']
 }
 
 export async function makeUser(overrides: MakeUserProps = {}) {
-  const passwordBeforeHash = randomUUID();
-  const passwordHash = await hash(passwordBeforeHash);
+  const passwordBeforeHash = randomUUID()
+  const passwordHash = await hash(passwordBeforeHash)
 
   const user = await db
     .insert(users)
@@ -24,13 +24,13 @@ export async function makeUser(overrides: MakeUserProps = {}) {
       password: overrides.password ?? passwordHash,
       role: overrides.role ?? 'STUDENT',
     })
-    .returning();
+    .returning()
 
-  return { user: user[0], passwordBeforeHash };
+  return { user: user[0], passwordBeforeHash }
 }
 
 export async function makeAuthenticatedUser(overrides: MakeUserProps = {}) {
-  const { user } = await makeUser(overrides);
+  const { user } = await makeUser(overrides)
 
   const accessToken = app.jwt.sign(
     {
@@ -38,11 +38,11 @@ export async function makeAuthenticatedUser(overrides: MakeUserProps = {}) {
     },
     {
       sub: user.id,
-    }
-  );
+    },
+  )
 
   return {
     user,
     accessToken,
-  };
+  }
 }
