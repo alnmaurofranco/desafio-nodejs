@@ -12,7 +12,9 @@
       "post": {
         "operationId": "authenticateWithPassword",
         "summary": "Autenticar com e-mail e senha",
-        "tags": ["Authentication"],
+        "tags": [
+          "Authentication"
+        ],
         "description": "Autentique-se com e-mail e senha para obter um token de autenticação",
         "requestBody": {
           "content": {
@@ -30,7 +32,10 @@
                     "minLength": 6
                   }
                 },
-                "required": ["email", "password"]
+                "required": [
+                  "email",
+                  "password"
+                ]
               }
             }
           },
@@ -50,7 +55,9 @@
                       "format": "jwt"
                     }
                   },
-                  "required": ["accessToken"],
+                  "required": [
+                    "accessToken"
+                  ],
                   "additionalProperties": false
                 }
               }
@@ -68,7 +75,9 @@
                       "type": "string"
                     }
                   },
-                  "required": ["message"],
+                  "required": [
+                    "message"
+                  ],
                   "additionalProperties": false
                 }
               }
@@ -81,7 +90,9 @@
       "get": {
         "operationId": "getCourses",
         "summary": "Lista de cursos",
-        "tags": ["Courses"],
+        "tags": [
+          "Courses"
+        ],
         "description": "Retorna uma lista de cursos com id e titulo",
         "parameters": [
           {
@@ -97,7 +108,10 @@
             "schema": {
               "default": "id",
               "type": "string",
-              "enum": ["id", "title"]
+              "enum": [
+                "id",
+                "title"
+              ]
             },
             "in": "query",
             "name": "orderBy",
@@ -108,7 +122,10 @@
             "schema": {
               "default": "asc",
               "type": "string",
-              "enum": ["asc", "desc"]
+              "enum": [
+                "asc",
+                "desc"
+              ]
             },
             "in": "query",
             "name": "orderDirection",
@@ -163,7 +180,11 @@
                             "type": "number"
                           }
                         },
-                        "required": ["id", "title", "enrollmentsCount"],
+                        "required": [
+                          "id",
+                          "title",
+                          "enrollmentsCount"
+                        ],
                         "additionalProperties": false
                       }
                     },
@@ -180,11 +201,18 @@
                           "type": "number"
                         }
                       },
-                      "required": ["pageIndex", "perPage", "totalCount"],
+                      "required": [
+                        "pageIndex",
+                        "perPage",
+                        "totalCount"
+                      ],
                       "additionalProperties": false
                     }
                   },
-                  "required": ["courses", "metadata"],
+                  "required": [
+                    "courses",
+                    "metadata"
+                  ],
                   "additionalProperties": false
                 }
               }
@@ -195,7 +223,9 @@
       "post": {
         "operationId": "createCourse",
         "summary": "Criar um curso",
-        "tags": ["Courses"],
+        "tags": [
+          "Courses"
+        ],
         "description": "Crie um curso com titulo e descricao",
         "requestBody": {
           "content": {
@@ -211,7 +241,9 @@
                     "type": "string"
                   }
                 },
-                "required": ["title"]
+                "required": [
+                  "title"
+                ]
               }
             }
           },
@@ -232,7 +264,9 @@
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000)$"
                     }
                   },
-                  "required": ["courseId"],
+                  "required": [
+                    "courseId"
+                  ],
                   "additionalProperties": false
                 }
               }
@@ -245,7 +279,9 @@
       "get": {
         "operationId": "getCourseById",
         "summary": "Detalhes de um curso",
-        "tags": ["Courses"],
+        "tags": [
+          "Courses"
+        ],
         "description": "Retorna os detalhes de um curso",
         "parameters": [
           {
@@ -281,16 +317,24 @@
                             },
                             {
                               "nullable": true,
-                              "enum": [null]
+                              "enum": [
+                                null
+                              ]
                             }
                           ]
                         }
                       },
-                      "required": ["id", "title", "description"],
+                      "required": [
+                        "id",
+                        "title",
+                        "description"
+                      ],
                       "additionalProperties": false
                     }
                   },
-                  "required": ["course"],
+                  "required": [
+                    "course"
+                  ],
                   "additionalProperties": false
                 }
               }
@@ -307,7 +351,9 @@
                       "type": "string"
                     }
                   },
-                  "required": ["message"],
+                  "required": [
+                    "message"
+                  ],
                   "additionalProperties": false
                 }
               }
